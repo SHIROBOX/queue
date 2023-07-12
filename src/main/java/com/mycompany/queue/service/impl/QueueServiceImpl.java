@@ -16,15 +16,6 @@ import org.springframework.stereotype.Service;
 public class QueueServiceImpl implements QueueService {
 
     @Override
-    public Queue findQueue(Queue queue) {
-        return QueueData.queues.stream()
-                .filter(q -> q.equals(queue))
-                .filter(q -> q.getStatus().equals(Status.RESERVE))
-                .findFirst()
-                .orElse(null);
-    }
-
-    @Override
     public int findLastQueueNumber() {
         if (QueueData.queues.isEmpty()) {
             return 0;
@@ -38,18 +29,18 @@ public class QueueServiceImpl implements QueueService {
     @Override
     public int checkWaitingQueue(Queue queue) {
         return QueueData.queues.stream()
-                .filter(q -> q.equals(queue))
+                .filter(q -> q.getNumber() < queue.getNumber())
                 .filter(q -> q.getStatus().equals(Status.RESERVE))
                 .collect(Collectors.toList()).size();
     }
 
     @Override
     public void cancelQueue(Queue queue) {
-        queue.setStatus(Status.CANCEL);
+        QueueData.queues.get(QueueData.queues.indexOf(queue)).setStatus(Status.CANCEL);
     }
 
     @Override
     public void endQueue(Queue queue) {
-        queue.setStatus(Status.ENTERED);
+        QueueData.queues.get(QueueData.queues.indexOf(queue)).setStatus(Status.ENTERED);
     }
 }

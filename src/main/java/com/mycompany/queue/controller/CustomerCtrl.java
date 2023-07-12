@@ -4,6 +4,9 @@ import com.mycompany.queue.model.Queue;
 import com.mycompany.queue.service.ReserveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -16,17 +19,27 @@ public class CustomerCtrl {
     @Autowired
     private ReserveService reserveService;
 
-    @GetMapping("/customer/addQueue")
-    public Queue onAddQueue() {
-        return reserveService.addQueue();
+    @PostMapping("/customer/add")
+    public String onAddQueue() {
+        Queue queue = reserveService.addQueue();
+        return "ทำการจองคิวเรียบร้อบ !! หมายเลขคิวของคุณตือ : "
+                + queue.getNumber();
     }
 
-    public int onCheckWaitingQueue(Queue queue) {
-        return reserveService.checkWaitingQueue(queue);
+    @GetMapping("/customer/check")
+    public String onCheckWaitingQueue(@RequestBody Queue queue) {
+        return "คิวหมายเลขที่ : " + queue.getNumber()
+                + " มีจำนวนคิวก่อนหน้าทั้งหมด "
+                + reserveService.checkWaitingQueue(queue)
+                + " คิว";
     }
 
-    public void onCancelQueue(Queue queue) {
+    @PutMapping("/customer/cancel")
+    public String onCancelQueue(@RequestBody Queue queue) {
         reserveService.cancelQueue(queue);
+        return "คิวหมายเลขที่ : "
+                + queue.getNumber()
+                + " ยกเลิกการจองเรียบร้อบแล้ว !!!";
     }
 
 }

@@ -5,7 +5,6 @@ import com.mycompany.queue.model.Queue;
 import com.mycompany.queue.model.Status;
 import com.mycompany.queue.service.QueueService;
 import com.mycompany.queue.service.ReserveService;
-import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

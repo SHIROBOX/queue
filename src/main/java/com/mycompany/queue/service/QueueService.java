@@ -8,8 +8,6 @@ import com.mycompany.queue.model.Queue;
  */
 public interface QueueService {
 
-    public Queue findQueue(Queue queue);
-
     public int findLastQueueNumber();
 
     public int checkWaitingQueue(Queue queue);
